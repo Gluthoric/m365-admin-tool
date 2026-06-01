@@ -1,0 +1,17 @@
+{
+  "default": "yourtenant",
+  "profiles": [
+    {
+      "name": "yourtenant",
+      "tenant_id": "00000000-0000-0000-0000-000000000000",
+      "client_id": "11111111-1111-1111-1111-111111111111",
+      "username": "admin@yourtenant.onmicrosoft.com"
+    },
+    {
+      "name": "other-tenant",
+      "tenant_id": "replace-with-tenant-guid",
+      "client_id": "replace-with-client-id",
+      "username": "admin@example.onmicrosoft.com"
+    }
+  ]
+}
