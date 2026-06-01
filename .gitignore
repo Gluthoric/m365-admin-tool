@@ -3,3 +3,12 @@
 __pycache__/
 *.pyc
 .venv/
+
+# Python build artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+*.egg-info/
+.venv/
