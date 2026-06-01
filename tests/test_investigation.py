@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from m365_admin_tool.investigation import (
     audit_event_touches_authentication,
@@ -59,7 +59,7 @@ def test_rule_helpers_detect_forwarding() -> None:
 
 
 def test_build_time_filter_uses_utc_timestamps() -> None:
-    now = datetime(2026, 3, 9, 12, 0, tzinfo=timezone.utc)
+    now = datetime(2026, 3, 9, 12, 0, tzinfo=UTC)
     result = build_time_filter("createdDateTime", 7, now=now)
 
     assert "createdDateTime ge 2026-03-02T12:00:00Z" in result

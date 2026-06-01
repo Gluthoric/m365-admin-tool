@@ -5,7 +5,6 @@ from urllib.parse import quote
 
 from .graph import GraphClient
 
-
 USER_SELECT = ",".join(
     (
         "id",

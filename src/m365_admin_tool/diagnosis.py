@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from collections import Counter
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
+from .exchange_admin import ExchangeAdminApiError, ExchangeAdminClient
 from .graph import GraphApiError, GraphClient
 from .identity import (
     fetch_user_auth_methods,
@@ -26,7 +27,6 @@ from .investigation import (
     summarize_rule,
 )
 from .outbound import (
-    address_text,
     describe_message_trace_error,
     fetch_folder_messages,
     fetch_mailbox_permissions,
@@ -38,8 +38,6 @@ from .outbound import (
     summarize_delegation,
     summarize_mailbox_snapshot,
 )
-from .exchange_admin import ExchangeAdminApiError, ExchangeAdminClient
-
 
 DANGEROUS_GRANT_SCOPES = {
     "mail.readwrite",
@@ -60,7 +58,7 @@ EXTERNAL_RULE_KEYS = ("forwardTo", "redirectTo", "forwardAsAttachmentTo")
 
 
 def utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 def parse_graph_datetime(value: str | None) -> datetime | None:
@@ -69,7 +67,7 @@ def parse_graph_datetime(value: str | None) -> datetime | None:
     try:
         if value.endswith("Z"):
             value = value[:-1] + "+00:00"
-        return datetime.fromisoformat(value).astimezone(timezone.utc)
+        return datetime.fromisoformat(value).astimezone(UTC)
     except ValueError:
         return None
 
@@ -395,7 +393,7 @@ def build_remediation_taken(audit: dict[str, Any]) -> list[dict[str, Any]]:
             continue
 
         if audit_event_touches_authentication(event):
-            app_name = str((((event.get("initiatedBy") or {}).get("app") or {}).get("displayName") or "")).lower()
+            app_name = str(((event.get("initiatedBy") or {}).get("app") or {}).get("displayName") or "").lower()
             if "credential configuration endpoint service" in app_name:
                 remediation.append(
                     {

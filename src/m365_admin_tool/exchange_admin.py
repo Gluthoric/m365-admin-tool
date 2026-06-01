@@ -20,7 +20,7 @@ class ExchangeAdminApiError(RuntimeError):
         return f"Exchange Admin API {self.status_code}: {self.message}"
 
     @classmethod
-    def from_response(cls, response: httpx.Response) -> "ExchangeAdminApiError":
+    def from_response(cls, response: httpx.Response) -> ExchangeAdminApiError:
         message = response.text
         code: str | None = None
         try:

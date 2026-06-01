@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Any, Mapping
+from collections.abc import Mapping
+from typing import Any
 
 import httpx
 
@@ -20,7 +21,7 @@ class GraphApiError(RuntimeError):
         return f"Graph API {self.status_code}: {self.message}"
 
     @classmethod
-    def from_response(cls, response: httpx.Response) -> "GraphApiError":
+    def from_response(cls, response: httpx.Response) -> GraphApiError:
         message = response.text
         code: str | None = None
         try:

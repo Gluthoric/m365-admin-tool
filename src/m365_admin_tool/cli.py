@@ -1,22 +1,24 @@
 from __future__ import annotations
 
 import argparse
-from datetime import datetime, timedelta, timezone
 import json
-from pathlib import Path
 import sys
-from typing import Any, Callable
+from collections.abc import Callable
+from datetime import UTC, datetime, timedelta
+from pathlib import Path
+from typing import Any
 
 from .auth import (
-    AuthError,
     EXCHANGE_RESOURCE,
     GRAPH_RESOURCE,
+    AuthError,
     TokenProvider,
     containment_scopes,
     default_login_scopes,
     exchange_delegated_scopes,
     requested_scopes,
 )
+from .config import ConfigurationError, Settings, load_tenant_profiles
 from .containment import (
     block_user_sign_in,
     disable_inbox_rule,
@@ -25,7 +27,6 @@ from .containment import (
     list_suspicious_rules,
     revoke_sign_in_sessions,
 )
-from .config import ConfigurationError, Settings, load_tenant_profiles
 from .diagnosis import build_diagnostic_payload
 from .doctor import run_doctor
 from .exchange_admin import ExchangeAdminApiError, ExchangeAdminClient
@@ -33,7 +34,6 @@ from .graph import GraphApiError, GraphClient
 from .investigation import (
     collect_aliases,
     fetch_directory_audits,
-    fetch_directory_audits_window,
     fetch_inbox_rules,
     fetch_risk_detections,
     fetch_signins,
@@ -70,8 +70,8 @@ def iso_datetime(value: str) -> datetime:
     except ValueError as exc:
         raise argparse.ArgumentTypeError(f"invalid datetime: {value}") from exc
     if parsed.tzinfo is None:
-        parsed = parsed.replace(tzinfo=timezone.utc)
-    return parsed.astimezone(timezone.utc)
+        parsed = parsed.replace(tzinfo=UTC)
+    return parsed.astimezone(UTC)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -263,7 +263,7 @@ def _add_window_args(parser: argparse.ArgumentParser, *, default_hours: int) -> 
 
 
 def utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 def resolve_time_window(
@@ -973,7 +973,7 @@ def build_full_diagnostic_payload(
             force_device_code=force_device_code,
             account=account,
         )
-    except (AuthError, ExchangeAdminApiError) as exc:
+    except (AuthError, ExchangeAdminApiError):
         exchange_token = None
 
     payload = build_diagnostic_payload(

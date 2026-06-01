@@ -8,12 +8,12 @@ from m365_admin_tool.cli import (
     cmd_diagnose,
     cmd_outbound_review,
     cmd_timeline,
-    resolve_time_window,
     resolve_account,
     resolve_auth_mode,
     resolve_identifier,
     resolve_sender,
     resolve_settings_profile,
+    resolve_time_window,
 )
 from m365_admin_tool.config import Settings
 from m365_admin_tool.graph import GraphApiError

@@ -1,10 +1,17 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
 import shutil
 import subprocess
+from dataclasses import asdict, dataclass
 
-from .auth import EXCHANGE_RESOURCE, GRAPH_RESOURCE, TokenProvider, default_login_scopes, exchange_delegated_scopes, requested_scopes
+from .auth import (
+    EXCHANGE_RESOURCE,
+    GRAPH_RESOURCE,
+    AuthError,
+    TokenProvider,
+    exchange_delegated_scopes,
+    requested_scopes,
+)
 from .config import Settings
 from .exchange_admin import ExchangeAdminApiError, ExchangeAdminClient
 from .graph import GraphApiError, GraphClient
@@ -15,7 +22,6 @@ from .outbound import (
     fetch_mailbox_snapshot,
     fetch_message_traces,
 )
-
 
 TRACE_SERVICE_PRINCIPAL_APP_ID = "8bd644d1-64a1-4d4b-ae52-2e0cbf64e373"
 

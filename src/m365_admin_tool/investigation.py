@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
-from typing import cast
-from typing import Any, Iterable
+from collections.abc import Iterable
+from datetime import UTC, datetime, timedelta
+from typing import Any, cast
 from urllib.parse import quote
 
 from .graph import GraphApiError, GraphClient
@@ -17,13 +17,13 @@ def escape_odata_string(value: str) -> str:
 
 
 def format_odata_datetime(value: datetime) -> str:
-    return value.astimezone(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    return value.astimezone(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 def ensure_utc_datetime(value: datetime) -> datetime:
     if value.tzinfo is None:
-        return value.replace(tzinfo=timezone.utc)
-    return value.astimezone(timezone.utc)
+        return value.replace(tzinfo=UTC)
+    return value.astimezone(UTC)
 
 
 def build_time_window_filter(field_name: str, start: datetime, end: datetime) -> str:
@@ -33,7 +33,7 @@ def build_time_window_filter(field_name: str, start: datetime, end: datetime) ->
 
 
 def build_time_filter(field_name: str, days: int, now: datetime | None = None) -> str:
-    end = now or datetime.now(timezone.utc)
+    end = now or datetime.now(UTC)
     start = end - timedelta(days=days)
     return build_time_window_filter(field_name, start, end)
 
@@ -70,7 +70,7 @@ def fetch_signins(
     days: int,
     limit: int,
 ) -> list[dict[str, Any]]:
-    end = datetime.now(timezone.utc)
+    end = datetime.now(UTC)
     start = end - timedelta(days=days)
     return fetch_signins_window(graph, token, identifier, start, end, limit)
 
@@ -114,7 +114,7 @@ def fetch_directory_audits(
     days: int,
     limit: int,
 ) -> list[dict[str, Any]]:
-    end = datetime.now(timezone.utc)
+    end = datetime.now(UTC)
     start = end - timedelta(days=days)
     return fetch_directory_audits_window(graph, token, identifiers, start, end, limit)
 
@@ -150,7 +150,7 @@ def fetch_risk_detections(
     days: int,
     limit: int,
 ) -> list[dict[str, Any]]:
-    end = datetime.now(timezone.utc)
+    end = datetime.now(UTC)
     start = end - timedelta(days=days)
     return fetch_risk_detections_window(graph, token, identifier, start, end, limit)
 

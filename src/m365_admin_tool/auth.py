@@ -1,14 +1,14 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 import sys
-from typing import Any, Callable, Sequence
+from collections.abc import Callable, Sequence
+from pathlib import Path
+from typing import Any
 
 import msal
 
 from .config import Settings
-
 
 GRAPH_RESOURCE = "https://graph.microsoft.com"
 EXCHANGE_RESOURCE = "https://outlook.office365.com"

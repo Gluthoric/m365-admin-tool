@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 import json
-from pathlib import Path
 import os
-
+from dataclasses import dataclass
+from pathlib import Path
 
 DEFAULT_GRAPH_BASE_URL = "https://graph.microsoft.com/v1.0"
 DEFAULT_AUTHORITY_HOST = "https://login.microsoftonline.com"
@@ -122,7 +121,7 @@ class Settings:
             raise ConfigurationError("M365_TENANT_ID is required unless M365_ACCESS_TOKEN is set.")
         return f"{self.authority_host.rstrip('/')}/{self.tenant_id}"
 
-    def with_profile(self, profile: TenantProfile) -> "Settings":
+    def with_profile(self, profile: TenantProfile) -> Settings:
         return Settings(
             profile_name=profile.name,
             tenant_id=profile.tenant_id,
@@ -139,7 +138,7 @@ class Settings:
         )
 
     @classmethod
-    def load(cls, cwd: Path | None = None) -> "Settings":
+    def load(cls, cwd: Path | None = None) -> Settings:
         env = merged_env(cwd)
         access_token = env.get("M365_ACCESS_TOKEN", "").strip() or None
         tenant_id = env.get("M365_TENANT_ID", "").strip() or None

@@ -1,4 +1,9 @@
-from m365_admin_tool.diagnosis import build_compromise_sections, build_findings, build_summary, summarize_outbound
+from m365_admin_tool.diagnosis import (
+    build_compromise_sections,
+    build_findings,
+    build_summary,
+    summarize_outbound,
+)
 
 
 def test_summarize_outbound_detects_burst() -> None:

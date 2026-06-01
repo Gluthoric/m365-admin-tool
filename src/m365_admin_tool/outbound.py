@@ -1,14 +1,13 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
 import re
+from datetime import UTC, datetime, timedelta
 from typing import Any
 from urllib.parse import quote
 
 from .exchange_admin import ExchangeAdminClient
 from .graph import GraphApiError, GraphClient
 from .investigation import escape_odata_string
-
 
 GRAPH_BETA_BASE_URL = "https://graph.microsoft.com/beta"
 MISSING_SP_APP_ID_PATTERN = re.compile(
@@ -36,14 +35,14 @@ MESSAGE_SELECT = ",".join(
 
 
 def window_bounds(*, hours: int = 48, days: int | None = None, now: datetime | None = None) -> tuple[datetime, datetime]:
-    end = now or datetime.now(timezone.utc)
+    end = now or datetime.now(UTC)
     total_hours = days * 24 if days is not None else hours
     start = end - timedelta(hours=total_hours)
     return start, end
 
 
 def odata_datetime(value: datetime) -> str:
-    return value.astimezone(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    return value.astimezone(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 def build_range_filter(field_name: str, start: datetime, end: datetime) -> str:

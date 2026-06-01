@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from m365_admin_tool.doctor import DoctorCheckResult, run_doctor, summarize_checks
 from m365_admin_tool.config import Settings
+from m365_admin_tool.doctor import DoctorCheckResult, run_doctor, summarize_checks
 
 
 def make_settings(username: str | None = None, client_secret: str | None = None) -> Settings:
